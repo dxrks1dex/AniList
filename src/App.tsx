@@ -1,13 +1,11 @@
-import React, {JSX, ReactNode} from 'react';
-import logo from './logo.svg';
-import './App.css';
-import {QueryClient, useQuery, QueryClientProvider} from "@tanstack/react-query";
-
-
+import React, { type JSX } from 'react'
+import './App.css'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useAnilistQuery } from './anilist.g'
 
 const queryClient = new QueryClient()
 
-function App() {
+function App (): JSX.Element {
   return <>
      <QueryClientProvider client={queryClient}>
          <Example/>
@@ -15,29 +13,23 @@ function App() {
   </>
 }
 
-export default App;
+export default App
 
-export function Example() {
-    const { isLoading, error, data } = useQuery({
-        queryKey: ['repoData'],
-        queryFn: () =>
-            fetch('https://api.github.com/repos/tannerlinsley/react-query').then(
-                (res) => res.json(),
-            ),
-    })
+export function Example (): JSX.Element {
+  const { isLoading, error, data } = useAnilistQuery({
+    endpoint: 'https://graphql.anilist.co',
+    fetchParams: { headers: { 'content-type': 'application/json' } }
+  }, {
+    id: 5
+  })
+  if (isLoading) return <>Loading...</>
 
-    if (isLoading) return <>Loading...</>
+  if (error) return <>An error has occurred: {(error as Error).message}</>
 
-    if (error) return <>An error has occurred: {(error as Error).message}</>
-
-    return (
+  return (
         <div>
-            <h1>{data.name}</h1>
-            <p>{data.description}</p>
-            <strong>👀 {data.subscribers_count}</strong>{' '}
-            <strong>✨ {data.stargazers_count}</strong>{' '}
-            <strong>🍴 {data.forks_count}</strong>
+            <h1>{data?.Media?.id}</h1>
+            <p>{data?.Media?.title?.romaji}</p>
         </div>
-    )
+  )
 }
-

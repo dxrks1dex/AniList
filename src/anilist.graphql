@@ -1,0 +1,11 @@
+query anilist($id:Int) {
+    Media(id: $id, type:ANIME){
+        id
+        title {
+            romaji
+            english
+            native
+            userPreferred
+        }
+    }
+}
