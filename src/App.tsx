@@ -1,26 +1,43 @@
-import React from 'react';
+import React, {JSX, ReactNode} from 'react';
 import logo from './logo.svg';
 import './App.css';
+import {QueryClient, useQuery, QueryClientProvider} from "@tanstack/react-query";
+
+
+
+const queryClient = new QueryClient()
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  return <>
+     <QueryClientProvider client={queryClient}>
+         <Example/>
+     </QueryClientProvider>
+  </>
 }
 
 export default App;
+
+export function Example() {
+    const { isLoading, error, data } = useQuery({
+        queryKey: ['repoData'],
+        queryFn: () =>
+            fetch('https://api.github.com/repos/tannerlinsley/react-query').then(
+                (res) => res.json(),
+            ),
+    })
+
+    if (isLoading) return <>Loading...</>
+
+    if (error) return <>An error has occurred: {(error as Error).message}</>
+
+    return (
+        <div>
+            <h1>{data.name}</h1>
+            <p>{data.description}</p>
+            <strong>👀 {data.subscribers_count}</strong>{' '}
+            <strong>✨ {data.stargazers_count}</strong>{' '}
+            <strong>🍴 {data.forks_count}</strong>
+        </div>
+    )
+}
+
