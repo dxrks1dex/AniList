@@ -1,0 +1,28 @@
+overwrite: true
+schema: "https://graphql.anilist.co"
+generates:
+  ./src/gqlTypes.g.ts:
+    plugins:
+      - typescript
+  ./src/:
+    documents: '**/*.graphql'
+    preset: near-operation-file
+    plugins:
+      - typescript-operations:
+          useTypeImports: false
+      - typescript-react-query:
+          useTypeImports: false
+
+    config: {
+      fetcher: 'fetch'
+    }
+    presetConfig:
+      baseTypesPath: ./gqlTypes.g.ts
+      extension: .g.ts
+    addOperationExport: true # useful for using fragment types in component props
+    exposeQueryKeys: true # useful for invalidation and prefetching on ssr
+    exposeMutationKeys: true # useful for subscribe to mutation
+    pureMagicComment: true # useful for webpack tree shaking
+    exposeFetcher: true # useful for queryClient.prefetchQuery on ssr
+    exposeDocument: true
+    useTypeImports: true
