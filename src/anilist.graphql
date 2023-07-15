@@ -1,11 +1,26 @@
-query anilist($id:Int) {
-    Media(id: $id, type:ANIME){
-        id
-        title {
-            romaji
-            english
-            native
-            userPreferred
+query trendingNow ($page: Int) {
+    Page (page: $page) {
+        media (sort:TRENDING_DESC, type:ANIME) {
+            coverImage {
+                large
+                color
+            }
+            title {
+                romaji
+            }
+        }
+    }
+}
+query allTimePopular ($page: Int) {
+    Page (page: $page) {
+        media (sort:POPULARITY_DESC, type:ANIME) {
+            coverImage {
+                large
+                color
+            }
+            title {
+                romaji
+            }
         }
     }
 }
