@@ -9,14 +9,14 @@ export const Footer = styled.footer`
   padding-top: 15%;
   
 `
-export const TextConteiner = styled.div`
+export const TextContainer = styled.div`
   display: flex;
   justify-content: space-between;
   
   margin-left: 15%;
   margin-right: 15%;
 `
-export const FooterDiscription = styled.div`
+export const FooterDescription = styled.div`
   
   height: 70%;
   width: 60%;

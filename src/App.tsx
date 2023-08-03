@@ -8,7 +8,7 @@ import { InformationBlock } from './DiscriptoinCard/discription'
 import { PopularThisSeason } from './TrendingNow/popularThisSeason'
 import { UpcomingNextSeason } from './TrendingNow/upcomingNextSeason'
 import { BodyStyle } from './global/bodyStyle'
-import { Footer, FooterDiscription, SiteTheme, TextConteiner } from './global/footer'
+import { Footer, FooterDescription, SiteTheme, TextContainer } from './global/footer'
 import { Searcher } from './Search/search'
 const queryClient = new QueryClient()
 
@@ -18,10 +18,10 @@ function App (): JSX.Element {
          <Example/>
      </QueryClientProvider>
       <Footer>
-          <TextConteiner>
+          <TextContainer>
               <SiteTheme>Site Theme</SiteTheme>
-              <FooterDiscription>Donate</FooterDiscription>
-          </TextConteiner>
+              <FooterDescription>Donate</FooterDescription>
+          </TextContainer>
       </Footer>
 
   </>
