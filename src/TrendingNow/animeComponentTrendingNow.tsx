@@ -1,11 +1,26 @@
 import styled from 'styled-components'
+// import { type JSX } from 'react'
+//
+// interface colorProps {
+//     color: string
+// }
+// export const getColorDefine = ({ color }: colorProps) => {
+//     color === '#d6e428' ?
+//         'hsl(14,80%,30%)'
+//         :
+//         color
+//
+//     return {color === '#d6e428' && '#e4d6a1' && '#e4a143' ? 'hsl(14,80%,30%)' : color
+// }
+// }
 
-export const AnimeComponentStyle = styled.section < { color: string | null | undefined } >`  
-  height: 295px;
+export const AnimeComponentStyle = styled.section < { color: string | null | undefined } >`
+  font-family: Roboto,-apple-system,BlinkMacSystemFont,Segoe UI,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+  
+  
+  height: 315px;
   width : 185px;
-
-  white-space: nowrap;
-
+  
   overflow: hidden;
   text-overflow: ellipsis;
 
@@ -44,6 +59,7 @@ export const AnimeImage = styled.img`
   width: 185px;
   height: 265px;
   
+  
   cursor: pointer;
   
 `
@@ -63,7 +79,7 @@ export const ListName = styled.a`
   color:  #647380;
   &:hover {
     color: #54606b;
-    transition: 0.4s;
+    transition: 0.05s;
   };
 
 `

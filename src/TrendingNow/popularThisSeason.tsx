@@ -1,5 +1,3 @@
-import React, { type JSX } from 'react'
-import { useAllTimePopularQuery } from '../anilist.g'
 import {
   AnimeComponentStyle,
   AnimeImage,
@@ -8,21 +6,29 @@ import {
   ListName,
   ViewAll
 } from './animeComponentTrendingNow'
+import React, { type JSX } from 'react'
+import { usePopularThisSeasonAndUpcomingQuery } from '../anilist.g'
+import { MediaSeason } from '../gqlTypes.g'
 
-export const AllTimePopular = (): JSX.Element => {
-  const { isLoading, error, data } = useAllTimePopularQuery({
+export const PopularThisSeason = (): JSX.Element => {
+  const { isLoading, error, data } = usePopularThisSeasonAndUpcomingQuery({
     endpoint: 'https://graphql.anilist.co',
     fetchParams: { headers: { 'content-type': 'application/json' } }
+  }, {
+    season: MediaSeason.Summer,
+    seasonYear: 2023
   })
+
   if (isLoading) return <>Loading...</>
+
   if (error) return <>An error has occurred: {(error as Error).message}</>
 
-  const allTimePopularArr = data?.Page?.media
-  const allTimePopularSlice = allTimePopularArr?.slice(0, 5)
+  const popularThisSeason = data?.Page?.media
+  const popularThisSeasonSlice = popularThisSeason?.slice(0, 5)
 
-  return <><ListName>ALL TIME POPULAR <ViewAll>View All</ViewAll></ListName>
+  return <><ListName>POPULAR THIS SEASON <ViewAll>View All</ViewAll></ListName>
         <AnimeSection>
-            {allTimePopularSlice?.map(item => <>
+            {popularThisSeasonSlice?.map(item => <>
                     <AnimeComponentStyle color={item?.coverImage?.color}>
                         <AnimeImage src = {item?.coverImage?.extraLarge}/>
                         <div style={{ cursor: 'pointer' }}>

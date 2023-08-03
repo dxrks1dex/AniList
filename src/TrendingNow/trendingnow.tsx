@@ -13,8 +13,6 @@ export const TrendingNow = (): JSX.Element => {
   const { isLoading, error, data } = useTrendingNowQuery({
     endpoint: 'https://graphql.anilist.co',
     fetchParams: { headers: { 'content-type': 'application/json' } }
-  }, {
-    page: 1
   })
 
   if (isLoading) return <>Loading...</>
@@ -28,10 +26,10 @@ export const TrendingNow = (): JSX.Element => {
     <AnimeSection>
         {trendingSplice?.map(item => <>
                 <AnimeComponentStyle color={item?.coverImage?.color}>
-                    <AnimeImage src = {item?.coverImage?.large}/>
+                    <AnimeImage src = {item?.coverImage?.extraLarge}/>
                     <div style={{ cursor: 'pointer' }}>
                         <AnimeTitleStyle>
-                            {item?.title?.romaji}
+                          {item?.title?.romaji}
                         </AnimeTitleStyle>
                     </div>
                 </AnimeComponentStyle>

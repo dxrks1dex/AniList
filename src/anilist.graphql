@@ -1,8 +1,8 @@
-query trendingNow ($page: Int) {
-    Page (page: $page) {
+query trendingNow {
+    Page (page: 1 perPage: 6) {
         media (sort:TRENDING_DESC, type:ANIME) {
             coverImage {
-                large
+                extraLarge
                 color
             }
             title {
@@ -11,11 +11,45 @@ query trendingNow ($page: Int) {
         }
     }
 }
-query allTimePopular ($page: Int) {
-    Page (page: $page) {
+query allTimePopular {
+    Page (page: 1 perPage: 6) {
         media (sort:POPULARITY_DESC, type:ANIME) {
             coverImage {
-                large
+                extraLarge
+                color
+            }
+            title {
+                romaji
+            }
+        }
+    }
+}
+query top100 {
+    Page (page: 1) {
+        media (sort:SCORE_DESC, type:ANIME) {
+            coverImage {
+                medium
+                color
+            }
+            title {
+                romaji
+            }
+            genres
+            meanScore
+            popularity
+            format
+            episodes
+            season
+            status
+            duration
+        }
+    }
+}
+query popularThisSeasonAndUpcoming ($season:MediaSeason, $seasonYear:Int) {
+    Page (page: 1 perPage:6) {
+        media(type:ANIME, sort:POPULARITY_DESC, season:$season, seasonYear:$seasonYear) {
+            coverImage{
+                extraLarge
                 color
             }
             title {
