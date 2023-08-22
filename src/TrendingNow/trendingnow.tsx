@@ -26,7 +26,7 @@ export const TrendingNow = (): JSX.Element => {
     <AnimeSection>
         {trendingSplice?.map(item => <>
                 <AnimeComponentStyle color={item?.coverImage?.color}>
-                    <AnimeImage src = {item?.coverImage?.extraLarge}/>
+                  {item?.coverImage?.extraLarge && <AnimeImage src = {item.coverImage.extraLarge}/>}
                     <div style={{ cursor: 'pointer' }}>
                         <AnimeTitleStyle>
                           {item?.title?.romaji}

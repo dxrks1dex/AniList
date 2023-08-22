@@ -58,3 +58,10 @@ query popularThisSeasonAndUpcoming ($season:MediaSeason, $seasonYear:Int) {
         }
     }
 }
+
+query GenreAndTagCollection {
+    GenreCollection
+    MediaTagCollection {
+        name
+    }
+}
