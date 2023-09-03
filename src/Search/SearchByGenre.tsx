@@ -1,5 +1,5 @@
 import React, { type JSX, useState } from 'react'
-import { SearchBar, SearchButton, SearchInput, SearchSection } from './searchStyle'
+import { SearchButton, SearchInput, SearchSection, SearchSectionName } from './searchStyle'
 import { useGenreAndTagCollectionQuery } from '../anilist.g'
 import { GenreOrTagStyleList, GenresOrTags, GenreTagTitleStyle } from './genreOrTagStyleComponent'
 
@@ -33,8 +33,7 @@ export const SearchByGenre = ({ genreOrTagValue, genreOrTag }: any): JSX.Element
     genreOrTagValue(tag)
   }
 
-  return <><SearchBar>
-        Genre
+  return <div><SearchSectionName>Genre</SearchSectionName>
         <SearchSection onClick={() => { setGenreList(!genreList) }}>
             <SearchInput value={genreOrTag} placeholder='Any' onChange={ handleGenreFound }/>
             {genreOrTag !== ''
@@ -46,18 +45,17 @@ export const SearchByGenre = ({ genreOrTagValue, genreOrTag }: any): JSX.Element
               : null
             }
         </SearchSection>
-    </SearchBar>
   { genreList
     ? <GenreOrTagStyleList>
           <>
-              <GenreTagTitleStyle>Genres</GenreTagTitleStyle>
+              <GenreTagTitleStyle>GENRES</GenreTagTitleStyle>
           {genreByInput?.map(genre =>
           // eslint-disable-next-line react/jsx-key
             <GenresOrTags onClick = {() =>
               handleGenreChoice(genre)
             }>{genre}</GenresOrTags>)}</>
           <>
-              <GenreTagTitleStyle>Tags</GenreTagTitleStyle>
+              <GenreTagTitleStyle>TAGS</GenreTagTitleStyle>
               {tagByInput?.map(tag =>
                   // eslint-disable-next-line react/jsx-key
                   <GenresOrTags onClick = {() =>
@@ -65,7 +63,7 @@ export const SearchByGenre = ({ genreOrTagValue, genreOrTag }: any): JSX.Element
                   }>{tag?.name}</GenresOrTags>)}
           </>
       </GenreOrTagStyleList>
-    : <></> }</>
+    : <></> }</div>
 }
 
 // import React, { type JSX, useState } from 'react'

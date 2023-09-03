@@ -2,10 +2,18 @@ import styled from 'styled-components'
 
 export const SearchBar = styled.section`
   margin-top: 4%;
-  margin-left: 14%;
+  margin-left: 14.5%;
+  margin-right: 14.5%;
+  
+  display: flex; 
+  justify-content: space-between;
+`
+export const SearchSectionName = styled.span`
+  font-weight: 500;
+  color: #516170;
 `
 export const SearchSection = styled.section`
-  margin-top: 1%;
+  margin-top: 8%;
   
   align-items: center;
   display: flex;
@@ -14,7 +22,7 @@ export const SearchSection = styled.section`
   background-color: #FBFBFB;
   
   height: 40px;
-  width: 12%;
+  width: 100%;
 
   box-shadow: 0 5px 45px rgba(0, 0, 150, 0.1);
   border-radius: 7px;

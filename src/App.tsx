@@ -8,8 +8,8 @@ import { InformationBlock } from './DiscriptoinCard/discription'
 import { PopularThisSeason } from './TrendingNow/popularThisSeason'
 import { UpcomingNextSeason } from './TrendingNow/upcomingNextSeason'
 import { BodyStyle } from './global/bodyStyle'
-import { Footer, FooterDescription, SiteTheme, TextContainer } from './global/footer'
-import { Searcher } from './Search/search'
+import { FooterStyle, FooterDescription, SiteTheme, TextContainer } from './global/footerStyle'
+import { Searcher } from './Search/Search'
 const queryClient = new QueryClient()
 
 function App (): JSX.Element {
@@ -17,12 +17,12 @@ function App (): JSX.Element {
      <QueryClientProvider client={queryClient}>
          <Example/>
      </QueryClientProvider>
-      <Footer>
+      <FooterStyle>
           <TextContainer>
               <SiteTheme>Site Theme</SiteTheme>
               <FooterDescription>Donate</FooterDescription>
           </TextContainer>
-      </Footer>
+      </FooterStyle>
 
   </>
 }
