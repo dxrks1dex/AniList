@@ -41,11 +41,34 @@ export const GenresOrTags = styled.section`
   border-radius: 5px;
   
   &:hover {
-    color: #3577FF;
+    color: #3DB4F2;
     transition: 0.4s;
     background-color: #EDF1F5;
   }
 
   font-size: 14px;
   font-weight: 500;
+  
+  display: flex;
+  justify-content: space-between;
+`
+export const GenreOrTagInInput = styled.div`
+  background-color: #DDE6EECC;
+  color: #647380;
+  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  height: auto;
+  max-width: 5%;
+  
+  padding: 5px;
+  
+  position: absolute;
+  
+  border-radius: 7px;
+
+  font-size: 13px;
+  font-weight: 400;
 `

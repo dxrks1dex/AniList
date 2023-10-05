@@ -8,6 +8,7 @@ import {
 } from './animeComponentTrendingNow'
 import React, { type JSX } from 'react'
 import { useTrendingNowQuery } from '../anilist.g'
+import { NavLink } from 'react-router-dom'
 
 export const TrendingNow = (): JSX.Element => {
   const { isLoading, error, data } = useTrendingNowQuery({
@@ -22,10 +23,10 @@ export const TrendingNow = (): JSX.Element => {
   const trendingArr = data?.Page?.media
   const trendingSplice = trendingArr?.slice(0, 5)
 
-  return <><ListName>TRENDING NOW <ViewAll>View All</ViewAll></ListName>
+  return <><NavLink to='anime/trending'><ListName>TRENDING NOW <ViewAll>View All</ViewAll></ListName></NavLink>
     <AnimeSection>
         {trendingSplice?.map(item => <>
-                <AnimeComponentStyle color={item?.coverImage?.color}>
+                <AnimeComponentStyle hoverColor={item?.coverImage?.color}>
                   {item?.coverImage?.extraLarge && <AnimeImage src = {item.coverImage.extraLarge}/>}
                     <div style={{ cursor: 'pointer' }}>
                         <AnimeTitleStyle>

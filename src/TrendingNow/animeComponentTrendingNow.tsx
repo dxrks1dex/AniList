@@ -14,7 +14,7 @@ import styled from 'styled-components'
 // }
 // }
 
-export const AnimeComponentStyle = styled.section < { color: string | null | undefined } >`
+export const AnimeComponentStyle = styled.section < { hoverColor: string | null | undefined } >`
   font-family: Roboto,-apple-system,BlinkMacSystemFont,Segoe UI,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
   
   
@@ -26,11 +26,10 @@ export const AnimeComponentStyle = styled.section < { color: string | null | und
 
   color: grey;
   &:hover {
-    color: ${props => props.color};
+    color: ${props => props.hoverColor};
     transition: 0.4s;
   }
 `
-
 export const AnimeTitleStyle = styled.a`
 
   font-size: 15px;
@@ -43,10 +42,8 @@ export const AnimeTitleStyle = styled.a`
 
 `
 export const AnimeSection = styled.section`
-//position: absolute;  
-
-  margin-left: 220px;
-  margin-right: 220px;
+//position: absolute;
+  
   margin-top: 20px;
 
 
@@ -66,10 +63,9 @@ export const AnimeImage = styled.img`
 export const ListName = styled.a`
   display: flex;
   justify-content: space-between;
-
-  margin-right: 220px;
-  margin-left: 220px;
+  
   margin-top: 60px;
+  //margin-bottom: 30px;
 
   cursor: pointer;
 

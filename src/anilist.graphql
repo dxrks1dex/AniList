@@ -1,5 +1,5 @@
-query trendingNow {
-    Page (page: 1 perPage: 6) {
+query trendingNow($page:Int = 1) {
+    Page (page:$page perPage: 20) {
         media (sort:TRENDING_DESC, type:ANIME) {
             coverImage {
                 extraLarge
@@ -63,5 +63,33 @@ query GenreAndTagCollection {
     GenreCollection
     MediaTagCollection {
         name
+        isAdult
+    }
+}
+query searchResult($page:Int = 1, $genre:[String], $year:String, $tag:[String], $season:MediaSeason, $sort:[MediaSort]=[POPULARITY_DESC,SCORE_DESC]) {
+    Page (page: $page, perPage:20) {
+        media (sort:$sort, type:ANIME, genre_in:$genre, startDate_like:$year, tag_in:$tag, season:$season) {
+            coverImage {
+                extraLarge
+                color
+            }
+            title {
+                romaji
+            }
+            genres
+            meanScore
+            popularity
+            format
+            episodes
+            season
+            status
+            duration
+            tags {
+                name
+            }
+            startDate{
+                year
+            }
+        }
     }
 }

@@ -7,9 +7,9 @@ import { Top100Anime } from './Top100/top100'
 import { InformationBlock } from './DiscriptoinCard/discription'
 import { PopularThisSeason } from './TrendingNow/popularThisSeason'
 import { UpcomingNextSeason } from './TrendingNow/upcomingNextSeason'
-import { BodyStyle } from './global/bodyStyle'
-import { FooterStyle, FooterDescription, SiteTheme, TextContainer } from './global/footerStyle'
+import { BodyStyle, ContentContainer } from './global/bodyStyle'
 import { Searcher } from './Search/Search'
+
 const queryClient = new QueryClient()
 
 function App (): JSX.Element {
@@ -17,13 +17,6 @@ function App (): JSX.Element {
      <QueryClientProvider client={queryClient}>
          <Example/>
      </QueryClientProvider>
-      <FooterStyle>
-          <TextContainer>
-              <SiteTheme>Site Theme</SiteTheme>
-              <FooterDescription>Donate</FooterDescription>
-          </TextContainer>
-      </FooterStyle>
-
   </>
 }
 
@@ -32,12 +25,14 @@ export default App
 export const Example = (): JSX.Element => {
   return (< BodyStyle >
       <InformationBlock/>
-          <Searcher/>
-      <TrendingNow/>
-      <PopularThisSeason/>
-      <UpcomingNextSeason/>
-      <AllTimePopular/>
-      <Top100Anime/>
+          <ContentContainer>
+              <Searcher/>
+              <TrendingNow/>
+              <PopularThisSeason/>
+              <UpcomingNextSeason/>
+              <AllTimePopular/>
+              <Top100Anime/>
+          </ContentContainer>
    </BodyStyle>
   )
 }

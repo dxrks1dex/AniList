@@ -23,8 +23,8 @@ export const AllTimePopular = (): JSX.Element => {
   return <><ListName>ALL TIME POPULAR <ViewAll>View All</ViewAll></ListName>
         <AnimeSection>
             {allTimePopularSlice?.map(item => <>
-                    <AnimeComponentStyle color={item?.coverImage?.color}>
-                        <AnimeImage src = {item?.coverImage?.extraLarge}/>
+                    <AnimeComponentStyle hoverColor={item?.coverImage?.color}>
+                      {item?.coverImage?.extraLarge && <AnimeImage src = {item?.coverImage?.extraLarge}/>}
                         <div style={{ cursor: 'pointer' }}>
                             <AnimeTitleStyle>
                                 {item?.title?.romaji}

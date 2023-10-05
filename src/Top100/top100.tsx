@@ -32,13 +32,13 @@ export const Top100Anime = (): JSX.Element => {
                 <AnimeTopSection>
                      <h2 style={{ color: '#8BA0B2' }}>#{counter + 1}</h2>
                     <AnimeTopConteiner>
-                        <AnimeTopImage src={item?.coverImage?.medium}/>
+                      {item?.coverImage?.medium && <AnimeTopImage src={item?.coverImage?.medium}/>}
 
                         <AnimeTopGenreAndTitle>
 
                             <AnimeTopTitleStyle hoverColor = {item?.coverImage?.color}>{item?.title?.romaji}</AnimeTopTitleStyle>
-                            {item?.genres?.map(geners => <>
-                                <GenreStyle href="#" genreColor = {item?.coverImage?.color} >{geners}</GenreStyle>
+                            {item?.genres?.map(genres => <>
+                                <GenreStyle href="#" genreColor = {item?.coverImage?.color} >{genres}</GenreStyle>
                             </>)}
                         </AnimeTopGenreAndTitle>
                         <TitleStatsConteiner>

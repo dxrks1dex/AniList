@@ -1,10 +1,13 @@
 import styled from 'styled-components'
 
 export const BestAnimeSection = styled.section`
-
-  margin-left: 220px;
-
+  margin-top: 30px;
+  
   width: 1080px;  
+  
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-gap: 24px;
 `
 
 export const AnimeTopSection = styled.section`
@@ -13,11 +16,16 @@ export const AnimeTopSection = styled.section`
  
   // margin-left: 220px;
   // margin-right: 220px;
-  padding-top: 30px;
+  //padding-top: 30px;
   margin-bottom: -5px;
 
   display: flex;
   justify-content: space-between;
+  //display: inline-grid;
+  //grid-template-columns: 48px auto;
+  //position: relative;
+  //text-align: left;
+  //min-height: 80px;
 
 `
 export const AnimeTopConteiner = styled.section`
@@ -38,8 +46,9 @@ export const AnimeTopConteiner = styled.section`
 
   border-radius: 5px;
 
-  display: flex;
-  
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: 10px;
 `
 
 export const AnimeTopImage = styled.img`
@@ -81,17 +90,16 @@ export const AnimeTopGenreAndTitle = styled.section`
   width : 500px;
 
   margin-top:18px;
-  margin-left: 10px;
 
   display: block;
 `
 
 export const GenreStyle = styled.a < { genreColor: string | null | undefined } >`
 
-  weight: auto;
+  width: auto;
   height: 15px;
 
-  padding: 0px 10px 5px 10px;
+  padding: 0 10px 5px 10px;
 
   margin-right: 10px;
 
@@ -104,7 +112,7 @@ export const GenreStyle = styled.a < { genreColor: string | null | undefined } >
   font-weight: 600;
   font-size: 11px;
 
-  align-text: center;
+  text-align: center;
   text-decoration: none;
   
   display: inline;
@@ -117,7 +125,9 @@ export const TitleStatsConteiner = styled.section`
   
   align-items: center;
 
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 30px;
   justify-content: space-between
 `
 export const TypeSeasonAndFeedbackSection = styled.section`

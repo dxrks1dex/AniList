@@ -29,8 +29,8 @@ export const UpcomingNextSeason = (): JSX.Element => {
   return <><ListName>UPCOMING NEXT SEASON<ViewAll>View All</ViewAll></ListName>
         <AnimeSection>
             {upcomingNextSeasonSlice?.map(item => <>
-                    <AnimeComponentStyle color={item?.coverImage?.color}>
-                        <AnimeImage src = {item?.coverImage?.extraLarge}/>
+                    <AnimeComponentStyle hoverColor={item?.coverImage?.color}>
+                      {item?.coverImage?.extraLarge && <AnimeImage src={item?.coverImage?.extraLarge}/>}
                         <div style={{ cursor: 'pointer' }}>
                             <AnimeTitleStyle>
                                 {item?.title?.romaji}
