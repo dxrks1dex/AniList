@@ -1,27 +1,27 @@
-import React, { type JSX, useState } from 'react'
+import React, { type ChangeEvent, type JSX, useEffect, useState } from 'react'
 import { SearchButton, SearchInput, SearchSection, SearchSectionName } from './searchStyle'
 import { useGenreAndTagCollectionQuery } from '../anilist.g'
-import {
-  GenreOrTagInInput,
-  GenreOrTagStyleList,
-  GenresOrTags,
-  GenreTagTitleStyle
-} from './genreOrTagStyleComponent'
-import { StyledClose } from './searchResoultStyleComponent'
+import { GenreOrTagStyleList, GenreTagTitleStyle } from './genreOrTagStyleComponent'
+import { useSearchContext } from './SearchContext'
+import { getSearchInputPlaceholder } from './GetSearchInputPlaceholder'
+import { SelectOption } from './SelectOption'
+import { useSearchParams } from 'react-router-dom'
 
-export const SearchByGenre = ({
-  genreOrTagValue,
-  genreOrTag,
-  tags, tagValue,
-  genreArr,
-  handleGenreArr,
-  tagArr,
-  handleTagArr,
-  deleteGenreByIndex,
-  deleteTagByIndex,
-  deleteTagAndGenre
-}: any): JSX.Element => {
-  const [genreList, setGenreList] = useState(false)
+export const SearchByGenre = (): JSX.Element => {
+  const [isGenreAndTagListOpen, setIsGenreAndTagListOpen] = useState(false)
+  const [searchTagOrGenre, setSearchTagOrGenre] = useState('')
+  const [searchParams] = useSearchParams()
+
+  const { data: { genres, tags }, operations: { setGenres, setTags, addTagUrl, addGenreUrl, clearGenresAndTags, clearUrl } } = useSearchContext()
+
+  useEffect(() => {
+    if (genres.length > 0) {
+      addGenreUrl()
+    }
+    if (tags.length > 0) {
+      addTagUrl()
+    }
+  }, [addGenreUrl, addTagUrl, genres.length, tags.length])
 
   const { isLoading, error, data } = useGenreAndTagCollectionQuery({
     endpoint: 'https://graphql.anilist.co',
@@ -31,153 +31,93 @@ export const SearchByGenre = ({
   if (isLoading) return <>Loading...</>
   if (error) return <>An error has occurred: {(error as Error).message}</>
 
-  const genreByInputArr = data?.GenreCollection?.filter(genre =>
-    genre?.slice(0, genreOrTag.length) === genreOrTag)
+  const genreFiltered = data?.GenreCollection?.filter((mediaGenre) =>
+    mediaGenre?.slice(0, searchTagOrGenre.length) === searchTagOrGenre
+  )
 
-  const tagAdultFilter = data?.MediaTagCollection?.filter(mediaTag =>
-    mediaTag?.isAdult === false)
-  const tagByInput = tagAdultFilter?.filter(tag =>
-    tag?.name.slice(0, genreOrTag.length) === genreOrTag)
+  const tagFiltered = data?.MediaTagCollection?.filter((mediaTag) =>
+    mediaTag?.name.slice(0, searchTagOrGenre.length) === searchTagOrGenre
+  )
 
-  const handleGenreFound = (event: any): any => {
-    genreOrTagValue(event.target.value) //! ! РЕНЕЙМНУТЬ
+  const onGenreClick = (mediaGenre: string | null): void => {
+    if (mediaGenre === null) {
+      return
+    }
+    if (isGenreSelected(mediaGenre)) {
+      setGenres((prevState) => prevState?.filter((item) => item !== mediaGenre))
+    } else {
+      setGenres((prevState) => [...prevState, mediaGenre])
+      addGenreUrl()
+    }
   }
-  const handleTagFound = (e: any): any => {
-    tagValue(e.target.value)
+  const onTagClick = (mediaTag: string): void => {
+    if (mediaTag === undefined || mediaTag === null) {
+      return
+    }
+    if (isTagSelected(mediaTag)) {
+      setTags((prevState) => prevState?.filter((item) => item !== mediaTag))
+    } else {
+      setTags((prevState) => [...prevState, mediaTag])
+      addTagUrl()
+    }
   }
-  const handleGenreAndTagClear = (): any => {
-    genreOrTagValue('') //! ! РЕНЕЙМНУТЬ
-    tagValue('')
-    deleteTagAndGenre()
+
+  const isGenreSelected = (mediaGenre: string | null): boolean => {
+    if (mediaGenre === null) {
+      return false
+    }
+    return genres.includes(mediaGenre)
   }
-  const handleGenreChoice = (genre: any): any => {
-    genreOrTagValue(genre)
+
+  const isTagSelected = (mediaTag: string): boolean => {
+    if (mediaTag === undefined || null) {
+      return false
+    }
+    return tags.includes(mediaTag)
   }
-  const handleTagChoice = (tag: any): any => {
-    tagValue(tag)
-  }
-  const handleGenreAddToArr = (genre: any): any => {
-    handleGenreArr(genre)
-  }
-  const handleTagAddToArr = (tag: any): any => {
-    handleTagArr(tag)
-  }
-  const deleteGenreFromFoundByIndex = (genre: any): any => {
-    deleteGenreByIndex(genre)
-  }
-  const deleteTagFromFoundByIndex = (tag: any): any => {
-    deleteTagByIndex(tag)
-  }
+
+  // useEffect(() => {
+  //   const urlParamsGenre = searchParams.get('genre')
+  //
+  //   if (urlParamsGenre !== null) {
+  //     const isUrlInclude = genres.includes(urlParamsGenre)
+  //     if (isUrlInclude) {
+  //       setGenres((prevState) => [...prevState, urlParamsGenre])
+  //     }
+  //   }
+  // }, [genres, searchParams, setGenres])
+
   return <div><SearchSectionName>Genre</SearchSectionName>
-        <SearchSection onClick={() => { setGenreList(!genreList) }}>
-          {/* eslint-disable-next-line react/jsx-key */}
-            <SearchInput value={tags === '' ? genreOrTag : tags}
-                         placeholder={genreArr.length === 0
-                           ? 'Any'
-                           : genreArr.length > 1
-                             ? <>
-                                 <GenreOrTagInInput>{genreArr[0]}</GenreOrTagInInput>
-                                 <GenreOrTagInInput>+{genreArr.length}</GenreOrTagInInput>
-                               </>
-                             : genreArr.map((mediaGenre: any) =>
-                             // eslint-disable-next-line react/jsx-key
-                                   <GenreOrTagInInput>{mediaGenre}</GenreOrTagInInput>
-                             )}
-                         onChange={ tags === '' ? handleGenreFound : handleTagFound}
+        <SearchSection onClick={() => { setIsGenreAndTagListOpen(!isGenreAndTagListOpen) }}>
+            <SearchInput value={searchTagOrGenre}
+                         placeholder={getSearchInputPlaceholder({ values: [...genres, ...tags] })}
+                         onChange={(e: ChangeEvent<HTMLInputElement>) => { setSearchTagOrGenre(e.target.value) }}
             />
-            {genreOrTag !== ''
-              ? <SearchButton onClick={(e: any) => {
-                handleGenreAndTagClear()
-                setGenreList(false)
+            {genres.length === 0 && tags.length === 0
+              ? null
+              : <SearchButton onClick={(e: any) => {
+                clearGenresAndTags()
+                setIsGenreAndTagListOpen(false)
                 e.preventDefault()
+                clearUrl()
               }}>X</SearchButton>
-              : null
             }
         </SearchSection>
-  { genreList
+  { isGenreAndTagListOpen
     ? <GenreOrTagStyleList>
-          <>
               <GenreTagTitleStyle>GENRES</GenreTagTitleStyle>
-          {genreByInputArr?.map(genre =>
-            genreArr.some((mediaGenre: string | null) => mediaGenre === genre)
-            // eslint-disable-next-line react/jsx-key
-              ? <GenresOrTags onClick = {() => {
-                deleteGenreFromFoundByIndex(genre)
-              }
-                }>{genre}<StyledClose/></GenresOrTags>
-            // eslint-disable-next-line react/jsx-key
-              : <GenresOrTags onClick = {() => {
-                handleGenreChoice(genre)
-                handleGenreAddToArr(genre)
-              }
-                }>{genre}</GenresOrTags>)}</>
-          <>
+        {genreFiltered?.map((mediaGenre) =>
+          <SelectOption key={mediaGenre}
+                        value={mediaGenre ?? ''}
+                        onClick={() => { onGenreClick(mediaGenre) }}
+                        selected={isGenreSelected(mediaGenre)}/>
+        )}
               <GenreTagTitleStyle>TAGS</GenreTagTitleStyle>
-              {tagByInput?.map(tag =>
-                tagArr.some((mediaTag: string | null) => mediaTag === tag?.name)
-                // eslint-disable-next-line react/jsx-key
-                  ? <GenresOrTags onClick={() => {
-                    deleteTagFromFoundByIndex(tag?.name)
-                  }
-                    }>{tag?.name}<StyledClose/></GenresOrTags>
-                // eslint-disable-next-line react/jsx-key
-                  : <GenresOrTags onClick = {() => {
-                    handleTagChoice(tag?.name)
-                    handleTagAddToArr(tag?.name)
-                    console.log(tagArr)
-                  }
-                  }>{tag?.name}</GenresOrTags>)}
-          </>
+        {tagFiltered?.map((mediaTag) =>
+        <SelectOption key={mediaTag?.name}
+                      value={mediaTag?.name ?? ''}
+                      onClick={() => { onTagClick(mediaTag?.name ?? '') }}
+                      selected={isTagSelected(mediaTag?.name ?? '')}/>)}
       </GenreOrTagStyleList>
     : <></> }</div>
 }
-
-// import React, { type JSX, useState } from 'react'
-// import { SearchBar, SearchButton, SearchInput, SearchSection } from './searchStyle'
-// import { useGenreAndTagCollectionQuery } from '../anilist.g'
-
-// export const SearchByGenre = (): JSX.Element => {
-//   const [foundByGenre, setFoundByGenre] = useState('')
-//   const [genreList, setGenreList] = useState(false)
-//
-//   const { isLoading, error, data } = useGenreAndTagCollectionQuery({
-//     endpoint: 'https://graphql.anilist.co',
-//     fetchParams: { headers: { 'content-type': 'application/json' } }
-//   })
-//
-//   if (isLoading) return <>Loading...</>
-//   if (error) return <>An error has occurred: {(error as Error).message}</>
-//
-//   const onGenreFound = (e: any): any => { setFoundByGenre(e.target.value) }
-//
-//   const genreByInput = data?.GenreCollection?.filter(genre => genre?.slice(0, foundByGenre.length) === foundByGenre)
-//   const tagByInput = data?.MediaTagCollection?.filter(tag => tag?.name.slice(0, foundByGenre.length) === foundByGenre)
-//
-//   return <><SearchBar>
-//         Genre
-//         <SearchSection onClick={() => { setGenreList(true) }}>
-//             <SearchInput placeholder='Any' value={foundByGenre} onInput={onGenreFound}/>
-//             {foundByGenre !== ''
-//               ? <SearchButton onClick={(e: any) => {
-//                 setFoundByGenre('')
-//                 setGenreList(false)
-//                 e.preventDefault()
-//               }}>X</SearchButton>
-//               : null
-//             }
-//         </SearchSection>
-//     </SearchBar>
-//   { genreList
-//     ? <>
-//           <>Genres
-//           {genreByInput?.map(genre =>
-//           // eslint-disable-next-line react/jsx-key
-//             <section>{genre}</section>)}</>
-//           <>Tags
-//               {tagByInput?.map(tag =>
-//                   // eslint-disable-next-line react/jsx-key
-//                   <section>{tag?.name}</section>)}
-//           </>
-//       </>
-//     : <></> }</>
-// }

@@ -1,10 +1,18 @@
-import React, { type JSX, useState } from 'react'
+import React, { type ChangeEvent, type JSX, useState } from 'react'
 import { useSearchResultQuery } from '../anilist.g'
-import { GenreOrTagStyleList, GenresOrTags } from './genreOrTagStyleComponent'
+import { GenreOrTagStyleList } from './genreOrTagStyleComponent'
 import { SearchButton, SearchInput, SearchSection, SearchSectionName } from './searchStyle'
+import { useSearchContext } from './SearchContext'
+import { SelectOption } from './SelectOption'
+import { getSearchInputPlaceholder } from './GetSearchInputPlaceholder'
+import { doubleDelete } from './doubleDelete'
 
-export const SearchByYear = ({ year, yearValue }: any): JSX.Element => {
+export const SearchByYear = (): JSX.Element => {
   const [yearList, setYearList] = useState(false)
+  const [searchYear, setSearchYear] = useState('')
+
+  const { data: { year }, operations: { setYear, clearYear } } = useSearchContext()
+
   const { isLoading, error, data } = useSearchResultQuery(
     {
       endpoint: 'https://graphql.anilist.co',
@@ -14,45 +22,55 @@ export const SearchByYear = ({ year, yearValue }: any): JSX.Element => {
   if (isLoading) return <>Loading...</>
   if (error) return <>An error has occurred: {(error as Error).message}</>
 
-  const yearSortByYear = data?.Page?.media?.sort((a: any, b: any): any =>
+  const yearSortByNumber = data?.Page?.media?.sort((a: any, b: any): any =>
     b?.startDate?.year - a?.startDate?.year)
-  const yearArray = yearSortByYear?.map(years => years?.startDate?.year?.toString())
-  const yearFilterOnDouble = yearArray?.filter((mediaYear, index) =>
-    yearArray?.indexOf(mediaYear) === index
-  )
-  const yearByInput = yearFilterOnDouble?.filter(mediaYear =>
-    mediaYear?.slice(0, year) === year)
+  const yearArray = yearSortByNumber?.map(years => years?.startDate?.year?.toString())
 
-  const handleYearFound = (e: any): any => {
-    yearValue(e.target.value)
+  const yearByInput = doubleDelete(yearArray)?.filter(mediaYear =>
+    mediaYear?.slice(0, searchYear.length) === searchYear)
+
+  const onYearClick = (mediaYear: string | undefined): void => {
+    if (mediaYear === undefined) {
+      return
+    }
+    if (mediaYear === year) {
+      clearYear()
+    } else {
+      setYear(mediaYear)
+    }
+    console.log(searchYear)
   }
-  const handleYearChoice = (year: string | null | undefined): any => {
-    yearValue(year)
-  }
-  const handleYearClear = (): any => {
-    yearValue('')
+
+  const isYearSelected = (mediaYear: string | undefined): boolean => {
+    if (mediaYear === undefined) {
+      return false
+    }
+    return year.includes(mediaYear)
   }
 
   return <div><SearchSectionName>Year</SearchSectionName>
       <SearchSection onClick={() => { setYearList(!yearList) }}>
-          <SearchInput value={year} placeholder='Any' onChange={ handleYearFound }/>
-          {year !== ''
-            ? <SearchButton onClick={(e: any) => {
-              handleYearClear()
-              setYearList(true)
-              e.preventDefault()
-            }}>X</SearchButton>
-            : null
-          }
+          <SearchInput value={searchYear}
+                       placeholder={getSearchInputPlaceholder({ values: year })}
+                       onChange={ (e: ChangeEvent<HTMLInputElement>) => { setSearchYear(e.target.value) }}/>
+        {year === ''
+          ? null
+          : <SearchButton onClick={(e: any) => {
+            clearYear()
+            setYearList(false)
+            e.preventDefault()
+          }}>X</SearchButton>
+        }
       </SearchSection>
       { yearList
         ? <GenreOrTagStyleList>
               <>
-                  {yearByInput?.map(year =>
-                      // eslint-disable-next-line react/jsx-key
-                      <GenresOrTags onClick = {() =>
-                        handleYearChoice(year)
-                      }>{year}</GenresOrTags>)}</>
+                  {yearByInput?.map((mediaYear) =>
+                      <SelectOption key={mediaYear}
+                                    value={mediaYear}
+                                    onClick = {() => { onYearClick(mediaYear ?? '') }}
+                                    selected={isYearSelected(mediaYear ?? '')}
+                      >{mediaYear}</SelectOption>)}</>
           </GenreOrTagStyleList>
         : <></> }</div>
 }

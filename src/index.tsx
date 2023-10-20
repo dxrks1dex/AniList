@@ -4,8 +4,6 @@ import './index.css'
 import reportWebVitals from './reportWebVitals'
 import { RouterProvider } from 'react-router-dom'
 import { routing } from './Routing/routing'
-import { FooterDescription, FooterStyle, SiteTheme, TextContainer } from './global/footerStyle'
-// import { Router } from 'react-router-dom'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -13,12 +11,6 @@ const root = ReactDOM.createRoot(
 root.render(
     <React.StrictMode>
         <RouterProvider router={routing} />
-      <FooterStyle>
-          <TextContainer>
-              <SiteTheme>Site Theme</SiteTheme>
-              <FooterDescription>Donate</FooterDescription>
-          </TextContainer>
-      </FooterStyle>
   </React.StrictMode>
 
 )

@@ -66,9 +66,9 @@ query GenreAndTagCollection {
         isAdult
     }
 }
-query searchResult($page:Int = 1, $genre:[String], $year:String, $tag:[String], $season:MediaSeason, $sort:[MediaSort]=[POPULARITY_DESC,SCORE_DESC]) {
+query searchResult($page:Int = 1, $genre:[String], $year:String, $tag:[String], $season:MediaSeason, $sort:[MediaSort]=[POPULARITY_DESC,SCORE_DESC], $search: String) {
     Page (page: $page, perPage:20) {
-        media (sort:$sort, type:ANIME, genre_in:$genre, startDate_like:$year, tag_in:$tag, season:$season) {
+        media (sort:$sort, type:ANIME, genre_in:$genre, startDate_like:$year, tag_in:$tag, season:$season, search: $search) {
             coverImage {
                 extraLarge
                 color

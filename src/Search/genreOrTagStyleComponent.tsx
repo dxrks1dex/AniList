@@ -31,7 +31,7 @@ export const GenreTagTitleStyle = styled.h1`
   font-size: 14px;
   font-weight: 500;
 `
-export const GenresOrTags = styled.section`
+export const SelectOptionSection = styled.section`
   color: #748899;
   cursor: pointer;
 
@@ -52,7 +52,7 @@ export const GenresOrTags = styled.section`
   display: flex;
   justify-content: space-between;
 `
-export const GenreOrTagInInput = styled.div`
+export const SearchInputPlaceholderBadge = styled.div`
   background-color: #DDE6EECC;
   color: #647380;
   

@@ -1,9 +1,16 @@
 import { type JSX } from 'react'
+import { useRouteError } from 'react-router-dom'
+
+interface Error {
+  message: string
+  statusText: string
+  error: string
+}
 
 export const NotFoundPage = (): JSX.Element => {
-  // eslint-disable-next-line react/react-in-jsx-scope
-  return <div>
-      {/* eslint-disable-next-line react/react-in-jsx-scope */}
+  const error = useRouteError() as Error
+  return <>
       <div>Page not found</div>
-  </div>
+      <div>{error.statusText ?? error.message}</div>
+  </>
 }

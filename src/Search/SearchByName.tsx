@@ -1,20 +1,21 @@
-import React, { type JSX } from 'react'
+import React, { type ChangeEvent, type JSX } from 'react'
 
-import { SearchButton, SearchInput, SearchSection, SearchSectionName } from './searchStyle'
+import { SearchInput, SearchSection, SearchSectionName } from './searchStyle'
+import { useSearchContext } from './SearchContext'
 
-export const SearchByName = ({ foundByName, animeNameValue }: any): JSX.Element => {
-  const handleNameFound = (event: any): any => {
-    animeNameValue(event.target.value)
-  }
-  const handleNameClear = (): any => {
-    animeNameValue('')
+export const SearchByName = (): JSX.Element => {
+  const { operations: { setSearch, clearSearch, clearUrl, addSearchUrl }, data: { search } } = useSearchContext()
+
+  const onNameFound = (event: ChangeEvent<HTMLInputElement>): void => {
+    setSearch(event.target.value)
+    addSearchUrl()
   }
 
   return <div><SearchSectionName>Search</SearchSectionName>
       <SearchSection>
-          <SearchInput value={foundByName} onChange={ handleNameFound }/>
-          {foundByName !== ''
-            ? <SearchButton onClick={(e: any) => { handleNameClear(); e.preventDefault() }}>X</SearchButton>
+          <SearchInput value={search} onChange={ onNameFound }/>
+          {search !== ''
+            ? <button onClick={(e) => { clearSearch(); e.preventDefault(); clearUrl() }}>X</button>
             : null}
       </SearchSection>
     </div>
