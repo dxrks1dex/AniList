@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import React, { type JSX } from 'react'
 
-export const discriptionArr = [
+export const discriptions = [
   {
     img: 'https://anilist.co/img/landing/stats.svg',
     titleCard: 'Discover your obsessions',
@@ -30,15 +30,15 @@ export const InformationBlock = (): JSX.Element => {
         </DescriptionPlatform>
 
         <DescriptionCard>
-            {discriptionArr.map(item => <>
-                <InformationBlockCard>
+            {discriptions.map(item => <>
+                <InformationBlockCard key={item.titleCard}>
                     <CardImage src={item.img} alt=""/>
-                    <CardTitleAndDiscription>
+                    <CardTitleAndDescription>
                         <CardTitle>{item.titleCard}</CardTitle>
                         <CardDiscription>
                             {item.discriptionCard}
                         </CardDiscription>
-                    </CardTitleAndDiscription>
+                    </CardTitleAndDescription>
                 </InformationBlockCard>
             </>)}
         </DescriptionCard>
@@ -121,7 +121,7 @@ export const CardImage = styled.img`
     height: 85.67px;
     width: 82px;
 `
-export const CardTitleAndDiscription = styled.div`
+export const CardTitleAndDescription = styled.div`
 
     width: 280px;
 
