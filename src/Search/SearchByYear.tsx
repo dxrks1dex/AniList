@@ -1,11 +1,11 @@
 import React, { type ChangeEvent, type JSX, useState } from 'react'
 import { useSearchResultQuery } from '../anilist.g'
-import { GenreOrTagStyleList } from './genreOrTagStyleComponent'
-import { SearchButton, SearchInput, SearchSection, SearchSectionName } from './searchStyle'
-import { useSearchContext } from './SearchContext'
-import { SelectOption } from './SelectOption'
-import { getSearchInputPlaceholder } from './GetSearchInputPlaceholder'
-import { doubleDelete } from './doubleDelete'
+import { GenreOrTagStyleList } from './searchStyleComponents/genreOrTagStyleComponent'
+import { SearchButton, SearchInput, SearchSection, SearchSectionName } from './searchStyleComponents/searchStyle'
+import { useSearchContext } from './hooks/SearchContext'
+import { SelectOption } from './searchFunctions/SelectOption'
+import { getSearchInputPlaceholder } from './searchFunctions/GetSearchInputPlaceholder'
+import { doubleDelete } from './searchFunctions/doubleDelete'
 
 export const SearchByYear = (): JSX.Element => {
   const [yearList, setYearList] = useState(false)

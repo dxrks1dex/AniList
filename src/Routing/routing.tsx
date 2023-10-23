@@ -1,9 +1,9 @@
 import { createBrowserRouter } from 'react-router-dom'
-import { TrendingNow } from './TrendingNow'
+import { TrendingNow } from './pages/TrendingNow'
 import App, { Example } from '../App'
 
 import React from 'react'
-import { NotFoundPage } from './NotFoundPage'
+import { NotFoundPage } from '../components/common/NotFoundPage'
 // import { PopularThisSeason } from './PopularThisSeason'
 
 export const routing = createBrowserRouter([

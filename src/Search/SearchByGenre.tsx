@@ -1,10 +1,10 @@
 import React, { type ChangeEvent, type JSX, useEffect, useState } from 'react'
-import { SearchButton, SearchInput, SearchSection, SearchSectionName } from './searchStyle'
+import { SearchButton, SearchInput, SearchSection, SearchSectionName } from './searchStyleComponents/searchStyle'
 import { useGenreAndTagCollectionQuery } from '../anilist.g'
-import { GenreOrTagStyleList, GenreTagTitleStyle } from './genreOrTagStyleComponent'
-import { useSearchContext } from './SearchContext'
-import { getSearchInputPlaceholder } from './GetSearchInputPlaceholder'
-import { SelectOption } from './SelectOption'
+import { GenreOrTagStyleList, GenreTagTitleStyle } from './searchStyleComponents/genreOrTagStyleComponent'
+import { useSearchContext } from './hooks/SearchContext'
+import { getSearchInputPlaceholder } from './searchFunctions/GetSearchInputPlaceholder'
+import { SelectOption } from './searchFunctions/SelectOption'
 import { useSearchParams } from 'react-router-dom'
 
 export const SearchByGenre = (): JSX.Element => {

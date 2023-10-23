@@ -1,7 +1,7 @@
 import React, { type ChangeEvent, type JSX } from 'react'
 
-import { SearchInput, SearchSection, SearchSectionName } from './searchStyle'
-import { useSearchContext } from './SearchContext'
+import { SearchInput, SearchSection, SearchSectionName } from './searchStyleComponents/searchStyle'
+import { useSearchContext } from './hooks/SearchContext'
 
 export const SearchByName = (): JSX.Element => {
   const { operations: { setSearch, clearSearch, clearUrl, addSearchUrl }, data: { search } } = useSearchContext()

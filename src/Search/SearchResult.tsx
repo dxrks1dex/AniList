@@ -1,8 +1,8 @@
 import { AnimeComponentStyle, AnimeImage, AnimeSection, AnimeTitleStyle } from '../TrendingNow/animeComponentTrendingNow'
 import React, { type JSX } from 'react'
 import { useSearchResultQuery } from '../anilist.g'
-import { SearchArguments, StyledClose } from './searchResoultStyleComponent'
-import { SearchResultGrid } from './searchResultComponentStyle'
+import { SearchArguments, StyledClose } from './searchStyleComponents/searchResoultStyleComponent'
+import { SearchResultGrid } from './searchStyleComponents/searchResultComponentStyle'
 
 export const SearchResult = ({ foundByName, year, genreArr, tagArr, season, animeNameValue }: any): JSX.Element => {
   // eslint-disable-next-line @typescript-eslint/restrict-plus-operands

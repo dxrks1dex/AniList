@@ -1,11 +1,11 @@
 import React, { type JSX, useState } from 'react'
 import { useSearchResultQuery } from '../anilist.g'
-import { SearchButton, SearchInput, SearchSection, SearchSectionName } from './searchStyle'
-import { GenreOrTagStyleList } from './genreOrTagStyleComponent'
-import { useSearchContext } from './SearchContext'
+import { SearchButton, SearchInput, SearchSection, SearchSectionName } from './searchStyleComponents/searchStyle'
+import { GenreOrTagStyleList } from './searchStyleComponents/genreOrTagStyleComponent'
+import { useSearchContext } from './hooks/SearchContext'
 import { type MediaSeason } from '../gqlTypes.g'
-import { SelectOption } from './SelectOption'
-import { doubleDelete } from './doubleDelete'
+import { SelectOption } from './searchFunctions/SelectOption'
+import { doubleDelete } from './searchFunctions/doubleDelete'
 
 export const SearchBySeason = (): JSX.Element => {
   const [seasonList, setSeasonList] = useState(false)

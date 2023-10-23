@@ -1,15 +1,15 @@
-import React, { type JSX, useCallback, useEffect, useRef, useState } from 'react'
-import { useSearchResultQuery } from '../anilist.g'
-import { AnimeComponentStyle, AnimeImage, AnimeTitleStyle } from '../TrendingNow/animeComponentTrendingNow'
-import { SearchResultGrid } from '../Search/searchResultComponentStyle'
-import { MediaSort } from '../gqlTypes.g'
-import { Title } from '../global/queryTitleStyle'
-import { ContentContainer } from '../global/bodyStyle'
-import { Searcher } from '../Search/Search'
-import { useSearchContext } from '../Search/SearchContext'
-import { usePaginateData } from '../global/usePaginateData'
-import { isElementAtBottomOfPage } from '../global/isElementAtBottomOfPage'
-import { useScrollListener } from '../global/useScrollListener'
+import React, { type JSX, useCallback, useRef, useState } from 'react'
+import { useSearchResultQuery } from '../../anilist.g'
+import { AnimeComponentStyle, AnimeImage, AnimeTitleStyle } from '../../TrendingNow/animeComponentTrendingNow'
+import { SearchResultGrid } from '../../Search/searchStyleComponents/searchResultComponentStyle'
+import { MediaSort } from '../../gqlTypes.g'
+import { Title } from '../../components/common/queryTitleStyle'
+import { ContentContainer } from '../../components/common/bodyStyle'
+import { Searcher } from '../../Search/Search'
+import { useSearchContext } from '../../Search/hooks/SearchContext'
+import { usePaginateData } from '../../hooks/common/usePaginateData'
+import { isElementAtBottomOfPage } from '../../utilits/dom/isElementAtBottomOfPage'
+import { useScrollListener } from '../../hooks/dom/useScrollListener'
 
 export const TrendingNow = (): JSX.Element => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -39,7 +39,7 @@ export const TrendingNow = (): JSX.Element => {
     currentPage
   })
 
-  const scrollHandler = useCallback((e) => {
+  const scrollHandler = useCallback((e: MouseEvent) => {
     if (isElementAtBottomOfPage(e.target) && !isFetchingRef.current) {
       setCurrentPage(prevPage => prevPage + 1)
     }

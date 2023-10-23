@@ -1,4 +1,4 @@
-import { type MediaSeason } from '../gqlTypes.g'
+import { type MediaSeason } from '../../gqlTypes.g'
 
 interface DelProps {
 

@@ -1,6 +1,6 @@
 import { type JSX } from 'react'
-import { SelectOptionSection } from './genreOrTagStyleComponent'
-import { type MediaSeason } from '../gqlTypes.g'
+import { SelectOptionSection } from '../searchStyleComponents/genreOrTagStyleComponent'
+import { type MediaSeason } from '../../gqlTypes.g'
 
 interface Props {
   value: string | undefined | MediaSeason | null

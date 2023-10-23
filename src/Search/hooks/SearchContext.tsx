@@ -8,7 +8,7 @@ import React, {
   useMemo,
   useState
 } from 'react'
-import { type MediaSeason } from '../gqlTypes.g'
+import { type MediaSeason } from '../../gqlTypes.g'
 import { useSearchParams } from 'react-router-dom'
 
 interface ISearchContext {

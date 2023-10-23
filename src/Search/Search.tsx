@@ -2,7 +2,7 @@ import React, { type JSX } from 'react'
 import { SearchByName } from './SearchByName'
 import { SearchByGenre } from './SearchByGenre'
 
-import { SearchBar } from './searchStyle'
+import { SearchBar } from './searchStyleComponents/searchStyle'
 import { SearchByYear } from './SearchByYear'
 import { SearchBySeason } from './SearchBySeason'
 

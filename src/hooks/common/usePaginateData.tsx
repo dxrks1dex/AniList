@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { type TrendingNowQuery } from '../anilist.g'
+import { type TrendingNowQuery } from '../../anilist.g'
 
 type Media = NonNullable<NonNullable<TrendingNowQuery['Page']>['media']>
 
