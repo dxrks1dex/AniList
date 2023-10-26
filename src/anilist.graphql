@@ -83,6 +83,7 @@ query searchResult($page:Int = 1, $genre:[String], $year:String, $tag:[String], 
             episodes
             season
             status
+            id
             duration
             tags {
                 name

@@ -4,6 +4,7 @@ import App, { Example } from '../App'
 
 import React from 'react'
 import { NotFoundPage } from '../components/common/NotFoundPage'
+import { TitlePage } from './pages/TitlePage'
 // import { PopularThisSeason } from './PopularThisSeason'
 
 export const routing = createBrowserRouter([
@@ -17,9 +18,15 @@ export const routing = createBrowserRouter([
         element: <Example/>
       },
       {
-        path: '/anime/trending',
+        path: '/anime/:sort',
         element: <>
             < TrendingNow/>
+        </>
+      },
+      {
+        path: '/anime/:id/:name',
+        element: <>
+          <TitlePage/>
         </>
       }
     ]

@@ -10,6 +10,9 @@ import { useSearchContext } from '../../Search/hooks/SearchContext'
 import { usePaginateData } from '../../hooks/common/usePaginateData'
 import { isElementAtBottomOfPage } from '../../utilits/dom/isElementAtBottomOfPage'
 import { useScrollListener } from '../../hooks/dom/useScrollListener'
+import { SortParams } from '../sortParams'
+import { Link } from 'react-router-dom'
+import { TitlePage } from './TitlePage'
 
 export const TrendingNow = (): JSX.Element => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -20,7 +23,7 @@ export const TrendingNow = (): JSX.Element => {
     endpoint: 'https://graphql.anilist.co',
     fetchParams: { headers: { 'content-type': 'application/json' } }
   }, {
-    sort: search === '' ? MediaSort.TrendingDesc : MediaSort.SearchMatch,
+    sort: search === '' ? SortParams() : MediaSort.SearchMatch,
     page: currentPage,
     genre: genres.length === 0 ? undefined : genres,
     tag: tags.length === 0 ? undefined : tags,
@@ -56,6 +59,11 @@ export const TrendingNow = (): JSX.Element => {
     <Searcher/>
         <SearchResultGrid>
           {paginatedData?.map(item => <>
+            <Link key={item?.title?.romaji} to={`/anime/${item?.title?.romaji ?? ''}/titleId`} onClick={() => TitlePage({
+              titleImage: item?.coverImage?.extraLarge,
+              titleColor: item?.coverImage?.color,
+              titleName: item?.title?.romaji
+            })}>
                     <AnimeComponentStyle hoverColor={item?.coverImage?.color}>
                         {item?.coverImage?.extraLarge && <AnimeImage src = {item.coverImage.extraLarge}/>}
                         <div style={{ cursor: 'pointer' }}>
@@ -64,6 +72,7 @@ export const TrendingNow = (): JSX.Element => {
                             </AnimeTitleStyle>
                         </div>
                     </AnimeComponentStyle>
+            </Link>
                 </>
           )}
           {isFetching ? <>Loading...</> : null}
