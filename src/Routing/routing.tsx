@@ -1,4 +1,5 @@
 import { createBrowserRouter } from 'react-router-dom'
+import {AnimePage} from "./pages/AnimePage";
 import { TrendingNow } from './pages/TrendingNow'
 import App, { Example } from '../App'
 
@@ -21,6 +22,10 @@ export const routing = createBrowserRouter([
         element: <>
             < TrendingNow/>
         </>
+      },
+      {
+        path: '/anime/:id/:name',
+        element: <AnimePage />
       }
     ]
   }])

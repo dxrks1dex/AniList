@@ -69,6 +69,7 @@ query GenreAndTagCollection {
 query searchResult($page:Int = 1, $genre:[String], $year:String, $tag:[String], $season:MediaSeason, $sort:[MediaSort]=[POPULARITY_DESC,SCORE_DESC], $search: String) {
     Page (page: $page, perPage:20) {
         media (sort:$sort, type:ANIME, genre_in:$genre, startDate_like:$year, tag_in:$tag, season:$season, search: $search) {
+            id
             coverImage {
                 extraLarge
                 color
@@ -90,6 +91,17 @@ query searchResult($page:Int = 1, $genre:[String], $year:String, $tag:[String], 
             startDate{
                 year
             }
+        }
+    }
+}
+
+query MediaAnime($id: Int) {
+    Media (id: $id, type: ANIME) { # Insert our variables into the query arguments (id) (type: ANIME is hard-coded in the query)
+        id
+        title {
+            romaji
+            english
+            native
         }
     }
 }

@@ -1,3 +1,3 @@
-export const isElementAtBottomOfPage = (event: number): boolean => {
-  return event.documentElement.scrollHeight - (event.documentElement.scrollTop + window.innerHeight) < 100
+export const isElementAtBottomOfPage = (): boolean => {
+  return document.documentElement.scrollHeight - (document.documentElement.scrollTop + window.innerHeight) < 100
 }

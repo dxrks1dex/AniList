@@ -1,6 +1,6 @@
-import React, { type JSX, useCallback, useRef, useState } from 'react'
+import React, { type JSX, useCallback, useMemo, useRef, useState } from 'react'
+import { AnimeCard } from '../../components/AnimeCard'
 import { useSearchResultQuery } from '../../anilist.g'
-import { AnimeComponentStyle, AnimeImage, AnimeTitleStyle } from '../../TrendingNow/animeComponentTrendingNow'
 import { SearchResultGrid } from '../../Search/searchStyleComponents/searchResultComponentStyle'
 import { MediaSort } from '../../gqlTypes.g'
 import { Title } from '../../components/common/queryTitleStyle'
@@ -39,13 +39,15 @@ export const TrendingNow = (): JSX.Element => {
     currentPage
   })
 
-  const scrollHandler = useCallback((e: MouseEvent) => {
-    if (isElementAtBottomOfPage(e.target) && !isFetchingRef.current) {
+  const scrollHandler = useCallback((e: Event) => {
+    if (isElementAtBottomOfPage() && !isFetchingRef.current) {
       setCurrentPage(prevPage => prevPage + 1)
     }
   }, [])
 
   useScrollListener(scrollHandler)
+
+  const paginatedItemsPrepared = useMemo(() => paginatedData?.filter(Boolean) as Array<NonNullable<typeof paginatedData[number]>>, [paginatedData])
 
   if (isLoading) return <>Loading...</>
 
@@ -55,17 +57,7 @@ export const TrendingNow = (): JSX.Element => {
     <Title>TRENDING ANIME</Title>
     <Searcher/>
         <SearchResultGrid>
-          {paginatedData?.map(item => <>
-                    <AnimeComponentStyle hoverColor={item?.coverImage?.color}>
-                        {item?.coverImage?.extraLarge && <AnimeImage src = {item.coverImage.extraLarge}/>}
-                        <div style={{ cursor: 'pointer' }}>
-                            <AnimeTitleStyle>
-                                {item?.title?.romaji}
-                            </AnimeTitleStyle>
-                        </div>
-                    </AnimeComponentStyle>
-                </>
-          )}
+          {paginatedItemsPrepared?.map(item => <AnimeCard key={item.id} {...item} />)}
           {isFetching ? <>Loading...</> : null}
         </SearchResultGrid>
     </ContentContainer>
