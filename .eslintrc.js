@@ -1,4 +1,4 @@
-module.exports = {
+    module.exports = {
     "env": {
         "browser": true,
         "es2021": true
@@ -31,6 +31,7 @@ module.exports = {
     ],
     "rules": {
         "@typescript-eslint/strict-boolean-expressions": "off",
-        "react/react-in-jsx-scope" : "off"
+        "react/react-in-jsx-scope" : "off",
+        "@typescript-eslint/consistent-type-definitions": "off"
     }
 }

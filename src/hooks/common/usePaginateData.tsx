@@ -1,19 +1,12 @@
 import { useEffect, useRef, useState } from 'react'
-import { type TrendingNowQuery } from '../../anilist.g'
 
-type Media = NonNullable<NonNullable<TrendingNowQuery['Page']>['media']>
-
-interface pagDataProps {
-  data: Media | undefined
-  trendingOutput: Media
-
+type PagDataProps<T> = {
+  data: T[] | null | undefined
   currentPage: number
-  prevPageRef: number | undefined
-
 }
 
-export const usePaginateData = ({ data, currentPage }: pagDataProps): Media => {
-  const [trendingOutput, setTrendingOutput] = useState<Media>([])
+export function usePaginateData<T> ({ data, currentPage }: PagDataProps<T>): T[] {
+  const [trendingOutput, setTrendingOutput] = useState<T[]>([])
 
   const currentPageRef = useRef(currentPage)
   currentPageRef.current = currentPage
@@ -26,10 +19,10 @@ export const usePaginateData = ({ data, currentPage }: pagDataProps): Media => {
     if (prevPage !== undefined && prevPage >= currentPageRef.current) {
       setTrendingOutput(data ?? [])
     } else
-    if (data !== undefined) {
-      setTrendingOutput(trendingOutput => ([...trendingOutput, ...(data ?? [])]))
-      prevPageRef.current = currentPageRef.current
-    }
+      if (data !== undefined) {
+        setTrendingOutput(trendingOutput => ([...trendingOutput, ...(data ?? [])]))
+        prevPageRef.current = currentPageRef.current
+      }
   }, [data])
 
   return trendingOutput

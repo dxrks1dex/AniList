@@ -1,6 +1,6 @@
-import React, { type JSX, useCallback, useRef, useState } from 'react'
+import React, { type JSX, useCallback, useMemo, useRef, useState } from 'react'
+import { AnimeCard } from '../../components/AnimeCard'
 import { useSearchResultQuery } from '../../anilist.g'
-import { AnimeComponentStyle, AnimeImage, AnimeTitleStyle } from '../../TrendingNow/animeComponentTrendingNow'
 import { SearchResultGrid } from '../../Search/searchStyleComponents/searchResultComponentStyle'
 import { MediaSort } from '../../gqlTypes.g'
 import { Title } from '../../components/common/queryTitleStyle'
@@ -11,8 +11,6 @@ import { usePaginateData } from '../../hooks/common/usePaginateData'
 import { isElementAtBottomOfPage } from '../../utilits/dom/isElementAtBottomOfPage'
 import { useScrollListener } from '../../hooks/dom/useScrollListener'
 import { SortParams } from '../sortParams'
-import { Link } from 'react-router-dom'
-import { TitlePage } from './TitlePage'
 
 export const TrendingNow = (): JSX.Element => {
   const [currentPage, setCurrentPage] = useState(1)
@@ -42,13 +40,15 @@ export const TrendingNow = (): JSX.Element => {
     currentPage
   })
 
-  const scrollHandler = useCallback((e: MouseEvent) => {
-    if (isElementAtBottomOfPage(e.target) && !isFetchingRef.current) {
+  const scrollHandler = useCallback((e: Event) => {
+    if (isElementAtBottomOfPage() && !isFetchingRef.current) {
       setCurrentPage(prevPage => prevPage + 1)
     }
   }, [])
 
   useScrollListener(scrollHandler)
+
+  const paginatedItemsPrepared = useMemo(() => paginatedData?.filter(Boolean) as Array<NonNullable<typeof paginatedData[number]>>, [paginatedData])
 
   if (isLoading) return <>Loading...</>
 
@@ -58,23 +58,7 @@ export const TrendingNow = (): JSX.Element => {
     <Title>TRENDING ANIME</Title>
     <Searcher/>
         <SearchResultGrid>
-          {paginatedData?.map(item => <>
-            <Link key={item?.title?.romaji} to={`/anime/${item?.title?.romaji ?? ''}/titleId`} onClick={() => TitlePage({
-              titleImage: item?.coverImage?.extraLarge,
-              titleColor: item?.coverImage?.color,
-              titleName: item?.title?.romaji
-            })}>
-                    <AnimeComponentStyle hoverColor={item?.coverImage?.color}>
-                        {item?.coverImage?.extraLarge && <AnimeImage src = {item.coverImage.extraLarge}/>}
-                        <div style={{ cursor: 'pointer' }}>
-                            <AnimeTitleStyle>
-                                {item?.title?.romaji}
-                            </AnimeTitleStyle>
-                        </div>
-                    </AnimeComponentStyle>
-            </Link>
-                </>
-          )}
+          {paginatedItemsPrepared?.map(item => <AnimeCard key={item.id} {...item} />)}
           {isFetching ? <>Loading...</> : null}
         </SearchResultGrid>
     </ContentContainer>

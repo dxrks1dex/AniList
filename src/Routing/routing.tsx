@@ -1,10 +1,10 @@
 import { createBrowserRouter } from 'react-router-dom'
+import { AnimePage } from './pages/AnimePage'
 import { TrendingNow } from './pages/TrendingNow'
 import App, { Example } from '../App'
 
 import React from 'react'
 import { NotFoundPage } from '../components/common/NotFoundPage'
-import { TitlePage } from './pages/TitlePage'
 // import { PopularThisSeason } from './PopularThisSeason'
 
 export const routing = createBrowserRouter([
@@ -25,9 +25,7 @@ export const routing = createBrowserRouter([
       },
       {
         path: '/anime/:id/:name',
-        element: <>
-          <TitlePage/>
-        </>
+        element: <AnimePage />
       }
     ]
   }])
