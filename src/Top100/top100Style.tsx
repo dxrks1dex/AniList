@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 
-export const BestAnimeSection = styled.section`
+export const Top100AnimeSection = styled.section`
   margin-top: 30px;
   
   width: 1080px;  
@@ -8,6 +8,8 @@ export const BestAnimeSection = styled.section`
   display: grid;
   grid-template-columns: 1fr;
   grid-gap: 24px;
+  
+  padding-bottom: 5%;
 `
 
 export const AnimeTopSection = styled.section`

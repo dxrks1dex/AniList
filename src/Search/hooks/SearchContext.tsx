@@ -18,6 +18,7 @@ interface ISearchContext {
     search: string
     year: string
     season: MediaSeason | undefined
+    currentPage: number
   }
   operations: {
     setSeason: Dispatch<SetStateAction<MediaSeason | undefined>>
@@ -37,6 +38,8 @@ interface ISearchContext {
     addGenreUrl: () => void
     addTagUrl: () => void
     clearUrl: () => void
+
+    setCurrentPage: Dispatch<React.SetStateAction<number>>
   }
 }
 
@@ -48,19 +51,24 @@ export const SearchContextWrapper: FC<{ children: ReactNode }> = ({ children }) 
   const [year, setYear] = useState<string>('')
   const [season, setSeason] = useState<MediaSeason | undefined>(undefined)
   const [searchParams, setSearchParams] = useSearchParams()
+  const [currentPage, setCurrentPage] = useState<number>(1)
 
   const clearSeason = useCallback((): void => {
     setSeason(undefined)
+    setCurrentPage(1)
   }, [])
   const clearSearch = useCallback((): void => {
     setSearch('')
+    setCurrentPage(1)
   }, [])
   const clearGenresAndTags = useCallback((): void => {
     setGenres([])
     setTags([])
+    setCurrentPage(1)
   }, [])
   const clearYear = useCallback((): void => {
     setYear('')
+    setCurrentPage(1)
   }, [])
 
   const addSearchUrl = useCallback((): void => {
@@ -69,20 +77,24 @@ export const SearchContextWrapper: FC<{ children: ReactNode }> = ({ children }) 
     }
     searchParams.set('search', search)
     setSearchParams(searchParams)
+    setCurrentPage(1)
   }, [search, searchParams, setSearchParams])
 
   const addGenreUrl = useCallback((): void => {
     searchParams.set('genre', genres)
     setSearchParams(searchParams)
+    setCurrentPage(1)
   }, [genres, setSearchParams, searchParams])
 
   const addTagUrl = useCallback((): void => {
     searchParams.set('tag', tags)
     setSearchParams(searchParams)
+    setCurrentPage(1)
   }, [tags, setSearchParams, searchParams])
 
   const clearUrl = useCallback((): void => {
     setSearchParams(undefined)
+    setCurrentPage(1)
   }, [setSearchParams])
 
   const context: ISearchContext = useMemo(() => ({
@@ -91,7 +103,8 @@ export const SearchContextWrapper: FC<{ children: ReactNode }> = ({ children }) 
       tags,
       search,
       season,
-      year
+      year,
+      currentPage
     },
     operations: {
       clearSearch,
@@ -109,9 +122,11 @@ export const SearchContextWrapper: FC<{ children: ReactNode }> = ({ children }) 
       addSearchUrl,
       addGenreUrl,
       addTagUrl,
-      clearUrl
+      clearUrl,
+
+      setCurrentPage
     }
-  }), [genres, tags, search, season, year, clearSearch, clearYear, clearGenresAndTags, clearSeason, clearUrl, addSearchUrl, addGenreUrl, addTagUrl])
+  }), [genres, tags, search, season, year, currentPage, clearSearch, clearYear, clearGenresAndTags, clearSeason, addSearchUrl, addGenreUrl, addTagUrl, clearUrl])
 
   return (
       <SearchContext.Provider value={context}>

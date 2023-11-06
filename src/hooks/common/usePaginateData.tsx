@@ -18,11 +18,10 @@ export function usePaginateData<T> ({ data, currentPage }: PagDataProps<T>): T[]
 
     if (prevPage !== undefined && prevPage >= currentPageRef.current) {
       setTrendingOutput(data ?? [])
-    } else
-      if (data !== undefined) {
-        setTrendingOutput(trendingOutput => ([...trendingOutput, ...(data ?? [])]))
-        prevPageRef.current = currentPageRef.current
-      }
+    } else if (data !== undefined) {
+      setTrendingOutput(trendingOutput => ([...trendingOutput, ...(data ?? [])]))
+    }
+    prevPageRef.current = currentPageRef.current
   }, [data])
 
   return trendingOutput

@@ -1,18 +1,17 @@
-import React, { type ChangeEvent, type JSX, useEffect, useState } from 'react'
+import React, { type ChangeEvent, type JSX, useEffect, useRef, useState } from 'react'
 import { SearchButton, SearchInput, SearchSection, SearchSectionName } from './searchStyleComponents/searchStyle'
 import { useGenreAndTagCollectionQuery } from '../anilist.g'
 import { GenreOrTagStyleList, GenreTagTitleStyle } from './searchStyleComponents/genreOrTagStyleComponent'
 import { useSearchContext } from './hooks/SearchContext'
 import { getSearchInputPlaceholder } from './searchFunctions/GetSearchInputPlaceholder'
 import { SelectOption } from './searchFunctions/SelectOption'
-import { useSearchParams } from 'react-router-dom'
+import { useOutsideDetect } from '../hooks/common/useOutsideDetect'
 
 export const SearchByGenre = (): JSX.Element => {
   const [isGenreAndTagListOpen, setIsGenreAndTagListOpen] = useState(false)
   const [searchTagOrGenre, setSearchTagOrGenre] = useState('')
-  const [searchParams] = useSearchParams()
 
-  const { data: { genres, tags }, operations: { setGenres, setTags, addTagUrl, addGenreUrl, clearGenresAndTags, clearUrl } } = useSearchContext()
+  const { data: { genres, tags }, operations: { setCurrentPage, setGenres, setTags, addTagUrl, addGenreUrl, clearGenresAndTags, clearUrl } } = useSearchContext()
 
   useEffect(() => {
     if (genres.length > 0) {
@@ -22,6 +21,9 @@ export const SearchByGenre = (): JSX.Element => {
       addTagUrl()
     }
   }, [addGenreUrl, addTagUrl, genres.length, tags.length])
+
+  const wrapperRef = useRef(null)
+  useOutsideDetect(wrapperRef, setIsGenreAndTagListOpen)
 
   const { isLoading, error, data } = useGenreAndTagCollectionQuery({
     endpoint: 'https://graphql.anilist.co',
@@ -45,6 +47,7 @@ export const SearchByGenre = (): JSX.Element => {
     }
     if (isGenreSelected(mediaGenre)) {
       setGenres((prevState) => prevState?.filter((item) => item !== mediaGenre))
+      setCurrentPage(1)
     } else {
       setGenres((prevState) => [...prevState, mediaGenre])
       addGenreUrl()
@@ -56,6 +59,7 @@ export const SearchByGenre = (): JSX.Element => {
     }
     if (isTagSelected(mediaTag)) {
       setTags((prevState) => prevState?.filter((item) => item !== mediaTag))
+      setCurrentPage(1)
     } else {
       setTags((prevState) => [...prevState, mediaTag])
       addTagUrl()
@@ -88,7 +92,7 @@ export const SearchByGenre = (): JSX.Element => {
   // }, [genres, searchParams, setGenres])
 
   return <div><SearchSectionName>Genre</SearchSectionName>
-        <SearchSection onClick={() => { setIsGenreAndTagListOpen(!isGenreAndTagListOpen) }}>
+        <SearchSection onClick={() => { setIsGenreAndTagListOpen(true) }}>
             <SearchInput value={searchTagOrGenre}
                          placeholder={getSearchInputPlaceholder({ values: [...genres, ...tags] })}
                          onChange={(e: ChangeEvent<HTMLInputElement>) => { setSearchTagOrGenre(e.target.value) }}
@@ -104,7 +108,7 @@ export const SearchByGenre = (): JSX.Element => {
             }
         </SearchSection>
   { isGenreAndTagListOpen
-    ? <GenreOrTagStyleList>
+    ? <GenreOrTagStyleList ref={wrapperRef}>
               <GenreTagTitleStyle>GENRES</GenreTagTitleStyle>
         {genreFiltered?.map((mediaGenre) =>
           <SelectOption key={mediaGenre}

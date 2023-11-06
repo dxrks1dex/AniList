@@ -1,13 +1,12 @@
 import React, { type JSX } from 'react'
 import { useAllTimePopularQuery } from '../anilist.g'
 import {
-  AnimeComponentStyle,
-  AnimeImage,
   AnimeSection,
-  AnimeTitleStyle,
   ListName,
   ViewAll
 } from './animeComponentTrendingNow'
+import { AnimeCard } from '../components/AnimeCard'
+import { NavLink } from 'react-router-dom'
 
 export const AllTimePopular = (): JSX.Element => {
   const { isLoading, error, data } = useAllTimePopularQuery({
@@ -18,21 +17,11 @@ export const AllTimePopular = (): JSX.Element => {
   if (error) return <>An error has occurred: {(error as Error).message}</>
 
   const allTimePopularArr = data?.Page?.media
-  const allTimePopularSlice = allTimePopularArr?.slice(0, 5)
+  const allTimePopularSlice = allTimePopularArr?.slice(0, 5) as Array<NonNullable<typeof allTimePopularArr[number]>>
 
-  return <><ListName>ALL TIME POPULAR <ViewAll>View All</ViewAll></ListName>
+  return <><NavLink to={'anime/all-time-popular'}><ListName>ALL TIME POPULAR <ViewAll>View All</ViewAll></ListName></NavLink>
         <AnimeSection>
-            {allTimePopularSlice?.map(item => <>
-                    <AnimeComponentStyle hoverColor={item?.coverImage?.color}>
-                      {item?.coverImage?.extraLarge && <AnimeImage src = {item?.coverImage?.extraLarge}/>}
-                        <div style={{ cursor: 'pointer' }}>
-                            <AnimeTitleStyle>
-                                {item?.title?.romaji}
-                            </AnimeTitleStyle>
-                        </div>
-                    </AnimeComponentStyle>
-                </>
-            )}
+            {allTimePopularSlice?.map(item => <AnimeCard key={item.id} {...item}/>)}
         </AnimeSection>
     </>
 }

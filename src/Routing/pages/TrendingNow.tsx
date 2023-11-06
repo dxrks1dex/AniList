@@ -1,34 +1,25 @@
-import React, { type JSX, useCallback, useMemo, useRef, useState } from 'react'
+import React, { type JSX, useCallback, useMemo, useRef } from 'react'
 import { AnimeCard } from '../../components/AnimeCard'
 import { useSearchResultQuery } from '../../anilist.g'
 import { SearchResultGrid } from '../../Search/searchStyleComponents/searchResultComponentStyle'
-import { MediaSort } from '../../gqlTypes.g'
 import { Title } from '../../components/common/queryTitleStyle'
 import { ContentContainer } from '../../components/common/bodyStyle'
 import { Searcher } from '../../Search/Search'
-import { useSearchContext } from '../../Search/hooks/SearchContext'
 import { usePaginateData } from '../../hooks/common/usePaginateData'
 import { isElementAtBottomOfPage } from '../../utilits/dom/isElementAtBottomOfPage'
 import { useScrollListener } from '../../hooks/dom/useScrollListener'
-import { SortParams } from '../sortParams'
+import { GetSearchParams } from '../../Search/searchFunctions/searchParams'
+
+import { useSearchContext } from '../../Search/hooks/SearchContext'
 
 export const TrendingNow = (): JSX.Element => {
-  const [currentPage, setCurrentPage] = useState(1)
-
-  const { data: { tags, season, year, genres, search } } = useSearchContext()
+  // const [currentPage, setCurrentPage] = useState(1)
+  const { data: { currentPage }, operations: { setCurrentPage } } = useSearchContext()
 
   const { isLoading, error, data, isFetching } = useSearchResultQuery({
     endpoint: 'https://graphql.anilist.co',
     fetchParams: { headers: { 'content-type': 'application/json' } }
-  }, {
-    sort: search === '' ? SortParams() : MediaSort.SearchMatch,
-    page: currentPage,
-    genre: genres.length === 0 ? undefined : genres,
-    tag: tags.length === 0 ? undefined : tags,
-    year: year === '' ? undefined : year + '%',
-    season,
-    search: search === '' ? undefined : search
-  }, {
+  }, GetSearchParams(currentPage), {
     keepPreviousData: true
   })
 
@@ -44,7 +35,7 @@ export const TrendingNow = (): JSX.Element => {
     if (isElementAtBottomOfPage() && !isFetchingRef.current) {
       setCurrentPage(prevPage => prevPage + 1)
     }
-  }, [])
+  }, [setCurrentPage])
 
   useScrollListener(scrollHandler)
 

@@ -4,7 +4,7 @@ import {
   AnimeTopImage,
   AnimeTopSection,
   AnimeTopTitleStyle,
-  BestAnimeSection,
+  Top100AnimeSection,
   GenreStyle,
   TitleStatsConteiner,
   TitleStatsTextStyle,
@@ -27,7 +27,7 @@ export const Top100Anime = (): JSX.Element => {
   const top100Slice = top100?.slice(0, 10)
 
   return <><ListName>TOP 100 ANIME <ViewAll>View All</ViewAll></ListName>
-        <BestAnimeSection>
+        <Top100AnimeSection>
             {top100Slice?.map((item, counter: number) => <>
                 <AnimeTopSection>
                      <h2 style={{ color: '#8BA0B2' }}>#{counter + 1}</h2>
@@ -69,6 +69,6 @@ export const Top100Anime = (): JSX.Element => {
                     </AnimeTopConteiner>
                 </AnimeTopSection>
             </>)}
-        </BestAnimeSection>
+        </Top100AnimeSection>
     </>
 }

@@ -1,4 +1,4 @@
-import React, { type JSX, useState } from 'react'
+import React, { type JSX, useRef, useState } from 'react'
 import { useSearchResultQuery } from '../anilist.g'
 import { SearchButton, SearchInput, SearchSection, SearchSectionName } from './searchStyleComponents/searchStyle'
 import { GenreOrTagStyleList } from './searchStyleComponents/genreOrTagStyleComponent'
@@ -6,10 +6,16 @@ import { useSearchContext } from './hooks/SearchContext'
 import { type MediaSeason } from '../gqlTypes.g'
 import { SelectOption } from './searchFunctions/SelectOption'
 import { doubleDelete } from './searchFunctions/doubleDelete'
+import { useOutsideDetect } from '../hooks/common/useOutsideDetect'
 
 export const SearchBySeason = (): JSX.Element => {
   const [seasonList, setSeasonList] = useState(false)
+
   const { data: { season }, operations: { setSeason, clearSeason } } = useSearchContext()
+
+  const wrapperRef = useRef(null)
+  useOutsideDetect(wrapperRef, setSeasonList)
+
   const { isLoading, error, data } = useSearchResultQuery({
     endpoint: 'https://graphql.anilist.co',
     fetchParams: { headers: { 'content-type': 'application/json' } }
@@ -51,7 +57,7 @@ export const SearchBySeason = (): JSX.Element => {
   }
 
   return <div><SearchSectionName>Season</SearchSectionName>
-        <SearchSection onClick={() => { setSeasonList(!seasonList) }}>
+        <SearchSection onClick={() => { setSeasonList(true) }}>
             <SearchInput value={seasonToLowerCase()} placeholder='Any'/>
             {season !== undefined
               ? <SearchButton onClick={(e: any) => {
@@ -63,7 +69,7 @@ export const SearchBySeason = (): JSX.Element => {
             }
         </SearchSection>
         { seasonList
-          ? <GenreOrTagStyleList>
+          ? <GenreOrTagStyleList ref={wrapperRef}>
                 <>
                     {doubleDelete(seasonSort)?.map((mediaSeason) =>
                         <SelectOption

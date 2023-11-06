@@ -1,4 +1,4 @@
-import React, { type ChangeEvent, type JSX, useState } from 'react'
+import React, { type ChangeEvent, type JSX, useRef, useState } from 'react'
 import { useSearchResultQuery } from '../anilist.g'
 import { GenreOrTagStyleList } from './searchStyleComponents/genreOrTagStyleComponent'
 import { SearchButton, SearchInput, SearchSection, SearchSectionName } from './searchStyleComponents/searchStyle'
@@ -6,12 +6,16 @@ import { useSearchContext } from './hooks/SearchContext'
 import { SelectOption } from './searchFunctions/SelectOption'
 import { getSearchInputPlaceholder } from './searchFunctions/GetSearchInputPlaceholder'
 import { doubleDelete } from './searchFunctions/doubleDelete'
+import { useOutsideDetect } from '../hooks/common/useOutsideDetect'
 
 export const SearchByYear = (): JSX.Element => {
   const [yearList, setYearList] = useState(false)
   const [searchYear, setSearchYear] = useState('')
 
   const { data: { year }, operations: { setYear, clearYear } } = useSearchContext()
+
+  const wrapperRef = useRef(null)
+  useOutsideDetect(wrapperRef, setYearList)
 
   const { isLoading, error, data } = useSearchResultQuery(
     {
@@ -49,7 +53,7 @@ export const SearchByYear = (): JSX.Element => {
   }
 
   return <div><SearchSectionName>Year</SearchSectionName>
-      <SearchSection onClick={() => { setYearList(!yearList) }}>
+      <SearchSection onClick={() => { setYearList(true) }}>
           <SearchInput value={searchYear}
                        placeholder={getSearchInputPlaceholder({ values: year })}
                        onChange={ (e: ChangeEvent<HTMLInputElement>) => { setSearchYear(e.target.value) }}/>
@@ -63,7 +67,7 @@ export const SearchByYear = (): JSX.Element => {
         }
       </SearchSection>
       { yearList
-        ? <GenreOrTagStyleList>
+        ? <GenreOrTagStyleList ref={wrapperRef}>
               <>
                   {yearByInput?.map((mediaYear) =>
                       <SelectOption key={mediaYear}

@@ -6,7 +6,7 @@ export const FooterStyle = styled.footer`
   
   background-color: #11161D;
 
-  padding-top: 15%;
+  padding-top: 30%;
   
 `
 export const TextContainer = styled.div`

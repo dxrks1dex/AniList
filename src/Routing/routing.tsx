@@ -5,7 +5,6 @@ import App, { Example } from '../App'
 
 import React from 'react'
 import { NotFoundPage } from '../components/common/NotFoundPage'
-// import { PopularThisSeason } from './PopularThisSeason'
 
 export const routing = createBrowserRouter([
   {

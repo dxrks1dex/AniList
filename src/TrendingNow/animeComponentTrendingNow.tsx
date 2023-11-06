@@ -55,10 +55,6 @@ export const AnimeImage = styled.img`
   border-radius: 5px;
   width: 185px;
   height: 265px;
-  
-  
-  cursor: pointer;
-  
 `
 export const ListName = styled.a`
   display: flex;

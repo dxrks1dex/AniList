@@ -1,14 +1,12 @@
 import {
-  AnimeComponentStyle,
-  AnimeImage,
   AnimeSection,
-  AnimeTitleStyle,
   ListName,
   ViewAll
 } from './animeComponentTrendingNow'
 import React, { type JSX } from 'react'
 import { useTrendingNowQuery } from '../anilist.g'
 import { NavLink } from 'react-router-dom'
+import { AnimeCard } from '../components/AnimeCard'
 
 export const TrendingNow = (): JSX.Element => {
   const { isLoading, error, data } = useTrendingNowQuery({
@@ -21,21 +19,11 @@ export const TrendingNow = (): JSX.Element => {
   if (error) return <>An error has occurred: {(error as Error).message}</>
 
   const trendingArr = data?.Page?.media
-  const trendingSplice = trendingArr?.slice(0, 5)
+  const trendingSplice = trendingArr?.slice(0, 5) as Array<NonNullable<typeof trendingArr[number]>>
 
   return <><NavLink to='anime/trending'><ListName>TRENDING NOW <ViewAll>View All</ViewAll></ListName></NavLink>
     <AnimeSection>
-        {trendingSplice?.map(item => <>
-                <AnimeComponentStyle hoverColor={item?.coverImage?.color}>
-                  {item?.coverImage?.extraLarge && <AnimeImage src = {item.coverImage.extraLarge}/>}
-                    <div style={{ cursor: 'pointer' }}>
-                        <AnimeTitleStyle>
-                          {item?.title?.romaji}
-                        </AnimeTitleStyle>
-                    </div>
-                </AnimeComponentStyle>
-            </>
-        )}
+        {trendingSplice?.map(item => <AnimeCard key={item?.id} {...item} />)}
     </AnimeSection>
 </>
 }

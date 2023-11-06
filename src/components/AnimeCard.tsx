@@ -14,7 +14,7 @@ type Props = {
 }
 
 export function AnimeCard ({ id, coverImage, title }: Props): JSX.Element {
-  return <Link to={`/anime/${id}/${title?.romaji ?? ''}`}><AnimeComponentStyle hoverColor={coverImage?.color}>
+  return <Link to={`/anime/${id}/${title?.romaji ?? ''}/`}><AnimeComponentStyle hoverColor={coverImage?.color}>
     {coverImage?.extraLarge && <AnimeImage src = {coverImage.extraLarge}/>}
     <div style={{ cursor: 'pointer' }}>
       <AnimeTitleStyle>
