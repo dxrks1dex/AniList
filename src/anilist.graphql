@@ -1,11 +1,146 @@
-query anilist($id:Int) {
-    Media(id: $id, type:ANIME){
+query trendingNow($page:Int = 1) {
+    Page (page:$page perPage: 20) {
+        media (sort:TRENDING_DESC, type:ANIME) {
+            id
+            coverImage {
+                extraLarge
+                color
+            }
+            title {
+                romaji
+            }
+        }
+    }
+}
+query allTimePopular {
+    Page (page: 1 perPage: 6) {
+        media (sort:POPULARITY_DESC, type:ANIME) {
+            id
+            coverImage {
+                extraLarge
+                color
+            }
+            title {
+                romaji
+            }
+        }
+    }
+}
+query top100 {
+    Page (page: 1) {
+        media (sort:SCORE_DESC, type:ANIME) {
+            id
+            coverImage {
+                medium
+                color
+            }
+            title {
+                romaji
+            }
+            genres
+            meanScore
+            popularity
+            format
+            episodes
+            season
+            status
+            duration
+        }
+    }
+}
+query popularThisSeasonAndUpcoming ($season:MediaSeason, $seasonYear:Int) {
+    Page (page: 1 perPage:6) {
+        media(type:ANIME, sort:POPULARITY_DESC, season:$season, seasonYear:$seasonYear) {
+            id
+            coverImage{
+                extraLarge
+                color
+            }
+            title {
+                romaji
+            }
+        }
+    }
+}
+
+query GenreAndTagCollection {
+    GenreCollection
+    MediaTagCollection {
+        name
+        isAdult
+    }
+}
+query searchResult($page:Int = 1, $genre:[String], $year:String, $tag:[String], $season:MediaSeason, $sort:[MediaSort]=[POPULARITY_DESC,SCORE_DESC], $search: String) {
+    Page (page: $page, perPage:20) {
+        media (sort:$sort, type:ANIME, genre_in:$genre, startDate_like:$year, tag_in:$tag, season:$season, search: $search) {
+            id
+            coverImage {
+                extraLarge
+                color
+            }
+            title {
+                romaji
+            }
+            genres
+            meanScore
+            popularity
+            format
+            episodes
+            season
+            status
+            id
+            duration
+            tags {
+                name
+            }
+            startDate{
+                year
+            }
+        }
+    }
+}
+
+query MediaAnime($id: Int) {
+    Media (id: $id, type: ANIME) { # Insert our variables into the query arguments (id) (type: ANIME is hard-coded in the query)
         id
+        description
+        season
+        seasonYear
+        type
+        format
+        status(version:2)
+        episodes
+        duration
+        chapters
+        volumes
+        meanScore
+        averageScore
+        popularity
+        favourites
         title {
             romaji
             english
             native
-            userPreferred
         }
+        genres
+        tags {
+            name
+            rank
+            description
+        }
+        bannerImage
+        characters(perPage:6) {
+            edges{
+                id role name voiceActors(language:JAPANESE)
+                {
+                    id name{userPreferred}language:languageV2 image{large}} node{
+                    id name{userPreferred}image{large}
+                }
+            }
+        }
+        coverImage {
+            extraLarge
+        }
+
     }
 }

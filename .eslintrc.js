@@ -1,11 +1,12 @@
-module.exports = {
+    module.exports = {
     "env": {
         "browser": true,
         "es2021": true
     },
     "extends": [
         "standard-with-typescript",
-        "plugin:react/recommended"
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended",
     ],
     "overrides": [
         {
@@ -29,6 +30,8 @@ module.exports = {
         "react"
     ],
     "rules": {
-        "@typescript-eslint/strict-boolean-expressions": "off"
+        "@typescript-eslint/strict-boolean-expressions": "off",
+        "react/react-in-jsx-scope" : "off",
+        "@typescript-eslint/consistent-type-definitions": "off"
     }
 }
